@@ -1,0 +1,143 @@
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0px;
+    right: 0;
+    background-color:#f1f1f1;
+    overflow-x: hidden;
+}
+
+.sidenav a:hover {
+    color: #d34615;
+}
+.sidenav div:hover {
+    cursor: pointer;
+}
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    font-size: 36px;
+    margin-left: 0px;
+}
+
+#main {
+    padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.panel .list-group .list-group-item:first-child {
+    border-top: 1px solid rgb(204, 204, 204);
+}
+
+#back-to-bootsnipp {
+    position: fixed;
+    top: 10px; right: 10px;
+}
+
+.c-list {
+    padding: 0px;
+    min-height: 44px;
+}
+.title {
+    display: inline-block;
+    font-size:20px;
+    font-weight: bold;
+    padding: 5px 15px;
+}
+ul.c-controls {
+    list-style: none;
+    margin: 0px;
+    min-height: 44px;
+}
+
+ul.c-controls li {
+    margin-top: 8px;
+    float: left;
+}
+
+ul.c-controls li a {
+    font-size:15px;
+    padding: 11px 10px 6px;   
+}
+ul.c-controls li a i {
+    min-width: 24px;
+    text-align: center;
+}
+
+ul.c-controls li a:hover {
+    background-color: rgba(51, 51, 51, 0.2);
+}
+
+.c-toggle {
+    font-size:15px;
+}
+
+.name {
+    font-size:15px;
+    font-weight: 700;
+}
+
+.c-info {
+    padding: 5px 10px;
+    font-size: 1.25em;
+}
+.col-xs-12:hover{
+    background-color: #d34615;
+}
+.doc {
+    width: 100%;
+    height: 500px;
+}
+.table tbody tr td{
+    max-width:200px; /* Customise it accordingly */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.table thead tr th{
+    background-color: #e4e1e0;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.modal-dialog{
+    position: relative;
+    display: table; /* This is important */ 
+    max-width: 1200px;
+    min-width: 1200px;   
+}
+
+/*style type input file*/
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 999px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  background: red;
+  cursor: inherit;
+  display: block;
+}
+input[readonly] {
+  background-color: white !important;
+  cursor: text !important;
+ }

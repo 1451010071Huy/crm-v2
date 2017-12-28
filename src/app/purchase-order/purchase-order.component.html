@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Purchase Ordersy</title>
+</head>
+
+<body id="main">
+  <div id="mySidenav" class="sidenav">
+    <div class="panel panel-default">
+      <div class="panel-heading c-list">
+        <div class="title">
+          <div class="row">
+            <div class="col-xs-2 pull-left">
+              <a>
+                <span href="javascript:void(0)" class="fa fa-times" (click)="closeNav()" style="text-align: left"></span>
+              </a>
+            </div>
+            <div class="col-xs-8 pull-center">
+              <span>Khách Hàng</span>
+            </div>
+            <div class="col-xs-2 pull-right">
+              <a routerLink="/customers">
+                <i class="glyphicon glyphicon-plus"></i>
+              </a>
+            </div>
+          </div>
+          <div class="row" style="margin-left: auto">
+            <input class="form-control input-sm" name="search" id="search " type="text" [(ngModel)]="searchText" placeholder="Search"
+              required>
+          </div>
+        </div>
+      </div>
+      <ul class="list-group" id="contact-list" *ngFor="let customer of customers | filter: searchText" (click)="GanKhachHang(customer.TenDayDu)">
+        <li class="list-group-item" id="" class="cursor:pointer">
+          <div class="col-xs-12">
+            <span class="name">{{customer.TenDayDu}}</span>
+            <br/>
+            <span class="glyphicon glyphicon-map-marker text-muted c-info" data-toggle="tooltip" title="{{customer.DiaChi}}"></span>
+            <span class="visible-xs">
+              <span class="text-muted">{{customer.DiaChi}}</span>
+              <br/>
+            </span>
+            <span class="glyphicon glyphicon-earphone text-muted c-info" data-toggle="tooltip" title="{{customer.DienThoai}}"></span>
+            <span class="visible-xs">
+              <span class="text-muted">{{customer.DienThoai}}</span>
+              <br/>
+            </span>
+            <span class="fa fa-comments text-muted c-info" data-toggle="tooltip" title="{{customer.Email}}"></span>
+            <span class="visible-xs">
+              <span class="text-muted">{{customer.Email}}</span>
+              <br/>
+            </span>
+          </div>
+          <div class="clearfix"></div>
+      </ul>
+    </div>
+  </div>
+  <!-- Add purchase-order-->
+  <div class="container">
+
+    <div *ngIf="purchaseOrder" class="container">
+      <div [hidden]="showFormAdd">
+        <button type="button" class="btn btn-primary" (click)="ShowFormAdd()">
+          <i class="fa fa-plus" aria-hidden="true"></i> Add purchaseOrder</button>
+      </div>
+      <button *ngIf="showFormAdd" type="button" class="btn btn-default" (click)="HideFormAdd()">
+        <i class="fa fa-minus" aria-hidden="true"></i> Ẩn Form </button>
+      <div class="form-horizontal" *ngIf="showFormAdd">
+        <div>
+          <legend>Add purchaseOrder</legend>
+          <div class="row">
+            <div class="col-xs-4">
+              <label for="">Số PO</label>
+              <input type="text" class="form-control" [(ngModel)]="purchaseOrder.SoHopDong" placeholder="Số Hợp Đồng">
+            </div>
+            <div class="col-xs-4">
+              <label for="">Giá Trị Hợp Đồng</label>
+              <input class="form-control" id="giatrihopdong" name="giatrihopdong" #giatrihopdong="ngModel" required pattern=".{7,}" [(ngModel)]="purchaseOrder.GiaTriHopDong"
+                currencyMask [options]="{ prefix:'', suffix: '', thousands: '.', precision : 0}" placeholder="vd : 5.000.000">
+              <div [hidden]="giatrihopdong.valid || giatrihopdong.untouched">
+                <div style="color: red" *ngIf="giatrihopdong.errors && giatrihopdong.errors.pattern">
+                  Giá trị hợp đồng phải lớn hơn 1 triệu, vui lòng kiểm tra lại
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <label for="">Kỳ Thanh Toán</label>
+              <button *ngIf="!purchaseOrder.KyThanhToan" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-plus" aria-hidden="true"></i> Thêm</button>
+              <button *ngIf="purchaseOrder.KyThanhToan" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa</button>
+              <div class="form-control">{{valYear}} Năm</div>
+              <!-- Modal -->
+              <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Kỳ Thanh Toán</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-xs-5">
+                          <p-slider [(ngModel)]="valYear" [style]="{'width':'200px'}" [min]="0" [max]="12"></p-slider>
+                          <h3 class="second">{{valYear}} Năm</h3>
+                        </div>
+                        <!-- Value Month
+                        <div class="col-xs-4">
+                          <p-slider [(ngModel)]="valMonth" [style]="{'width':'200px'}" [min]="0" [max]="12"></p-slider>
+                          <h3 class="first">{{valMonth}} Tháng</h3>
+                        </div>
+                        -->
+                      </div>
+                      <button [disabled]="!valYear" class="btn btn-primary" (click)="TaoKyThanhToan()">Tạo kỳ thanh toán</button>
+                      <br>
+                      <!--Table Year -->
+                      <legend>Số Năm</legend>
+                      <div *ngIf="valYear">
+                        <div *ngFor="let year of data; trackBy: $index; let y = index">
+                          <label>Năm thứ {{y + 1}}-------------------------------</label>
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th *ngFor="let month of getArrayOf(12); trackBy: $index; let i = index">
+                                  T {{i + 1}}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td *ngFor="let month of data[y]; trackBy: $index; let i = index">
+                                  <input type="number" class="form-control" style="text-align: center" [(ngModel)]="month.value" min="0" max="1000" step="10"
+                                  />
+                                </td>
+                              </tr>
+                            </tbody>
+
+                          </table>
+                          <label id="">Total : {{ calculate(data[y]) | currency:'VND':symbol-narrow:'0.0' }}</label>
+                          <br>
+                        </div>
+                      </div>
+                      <div>
+
+                        <!--Table Month 
+                        <legend *ngIf="valMonth">Số Tháng</legend>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th *ngFor="let month of data; trackBy:$index; let i = index">
+                                T {{i + 1}}
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td *ngFor="let month of data[i]; trackBy: $index; let i = index">
+                                <input type="number" style="text-align: center" class="form-control" placeholder="(edit)" [(ngModel)]="month.value" min="0" max="1000" step="10" />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>-->
+                      </div>
+                      <br>
+                    </div>
+                    <div class="modal-footer">
+                      <button [disabled]="!valYear" type="button" class="btn btn-info pull-left" (click)="SaveKyThanhToan()">
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                      <button type="button" class="btn btn-default pull right" data-dismiss="modal">
+                        <i class="fa fa-times" aria-hidden="true"></i> Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-xs-4">
+              <label for="">Ngày Ký</label>
+              <br>
+              <p-calendar yearRange="2017:2050" yearNavigator="true" placeholder="Ngày/Tháng/Năm" dateFormat="dd/mm/yy" [monthNavigator]="true"
+                [(ngModel)]="purchaseOrder.NgayKy" [showIcon]="true" showButtonBar="true"></p-calendar>
+            </div>
+            <div class="col-xs-4">
+              <label for="">Ngày Bắt Đầu</label>
+              <br>
+              <p-calendar yearRange="2017:2050" yearNavigator="true" placeholder="Ngày/Tháng/Năm" dateFormat="dd/mm/yy" [monthNavigator]="true"
+                [(ngModel)]="purchaseOrder.NgayBatDau" [showIcon]="true" showButtonBar="true"></p-calendar>
+            </div>
+            <div class="col-xs-4">
+              <label for="">Ngày Kết Thúc</label>
+              <br>
+              <p-calendar yearRange="2017:2050" yearNavigator="true" placeholder="Ngày/Tháng/Năm" dateFormat="dd/mm/yy" [monthNavigator]="true"
+                [(ngModel)]="purchaseOrder.NgayKetThuc" [showIcon]="true" showButtonBar="true"></p-calendar>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4">
+              <label for="">Khách Hàng</label>
+              <input class="form-control" name="" id="" [(ngModel)]="purchaseOrder.KhachHang" (click)="openNav()" readonly="true" style="cursor: pointer"
+                placeholder="Chọn khách hàng">
+            </div>
+            <div class="col-xs-4">
+              <label for="">Người Liên Hệ</label>
+              <input type="text" class="form-control" [(ngModel)]="purchaseOrder.NguoiLienHe" placeholder="Người Liên Hệ">
+            </div>
+            <div class="col-xs-4">
+              <label for="">Địa Chỉ</label>
+              <input type="text" class="form-control" [(ngModel)]="purchaseOrder.DiaChi" placeholder="261 – 263 Phan Xích Long, P.2, Q.Phú Nhuận">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4">
+              <label for="">AM</label>
+              <input type="text" class="form-control" [(ngModel)]="purchaseOrder.AM" placeholder="Nhân viên kinh doanh phụ trách hợp đồng">
+            </div>
+            <div class="col-xs-4">
+              <label for="">Nội Dung Hợp Đồng</label>
+              <input type="text" class="form-control" [(ngModel)]="purchaseOrder.NoiDungHopDong" placeholder="Nội Dung Hợp Đồng">
+            </div>
+            <div class="col-xs-4">
+              <label for="">Thông Tin Khác</label>
+              <input type="text" class="form-control" [(ngModel)]="purchaseOrder.ThongTinKhac" placeholder="Thông Tin Khác">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-11">
+              <label for="multiple">File Hợp Đồng</label>
+              <div class="row">
+                <div class="col-xs-2 col-sm-2">
+                  <div class="input-group">
+                    <span class="input-group-btn">
+                      <span class="btn btn-primary btn-file">
+                        <i class="fa fa-folder-open-o" aria-hidden="true"></i> Choose File...
+                        <input type="file" class="form-control" name="multiple" ng2FileSelect [uploader]="uploader" multiple accept=".csv, .doc, .docx, .djvu, .odp, .ods,
+                                .odt, .pps, .ppsx, .ppt, .pptx, .pdf, .ps, .eps, .rtf, .wks, .wps, .xls, .xlsx, .xps">
+                      </span>
+                    </span>
+                  </div>
+                  <br>
+                </div>
+                <div class="col-xs-10 col-sm-10">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th width="40%">Name
+                          <span class="label label-primary">Tổng {{ uploader?.queue?.length }}</span>
+                        </th>
+                        <th>Size</th>
+                        <th>Progress</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of uploader.queue">
+                        <td>
+                          <strong>{{ item.file.name }}</strong>
+                        </td>
+                        <td nowrap>{{ item.file.size/1024/1024 | number:'.2' }} MB</td>
+                        <td>
+                          <div class="progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div><div>{{item.progress + '%'}}</div>
+                          </div>
+                        </td>
+                        <td class="text-center">
+                          <span *ngIf="item.isSuccess">
+                            <i class="glyphicon glyphicon-ok"></i>
+                          </span>
+                          <span *ngIf="item.isCancel">
+                            <i class="glyphicon glyphicon-ban-circle"></i>
+                          </span>
+                          <span *ngIf="item.isError">
+                            <i class="glyphicon glyphicon-remove"></i>
+                          </span>
+                        </td>
+                        <td nowrap>
+                          <button type="button" class="btn btn-warning btn-xs" (click)="item.cancel()" [disabled]="!item.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                          </button>
+                          <button type="button" class="btn btn-danger btn-xs" (click)="item.remove()">
+                            <span class="glyphicon glyphicon-trash"></span> Remove
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="text-align: center">
+                    <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                      <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                    </button>
+                    <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                      <span class="glyphicon glyphicon-trash"></span> Remove all
+                    </button>
+                  </div>
+                  <div>
+                    <div>
+                      Queue progress:
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-info" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%'}"></div><div>{{uploader.progress + '%'}}</div>
+                      </div>
+                    </div>
+                    <div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4">
+              <button type="submit" class="btn btn-primary" (click)="addPurchaseOrder()">
+                <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit</button>
+              <i *ngIf="showSpinner" style="margin-top: 5px" class="fa fa-spinner fa-pulse fa-fw" style="cursor: pointer; color:#c34113"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-horizontal" *ngIf="purchaseOrder">
+      <div *ngIf="showFormEdit  " class="container">
+        <div class="row">
+          <div class="col-xs-10">
+            <legend>Edit purchaseOrder</legend>
+          </div>
+          <div class="col-xs-4">
+            <label for="">Số PO</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.SoHopDong" placeholder="vd: HD0123">
+          </div>
+          <div class="col-xs-4">
+            <label for="">Ngày Ký</label>
+            <br>
+            <owl-date-time dateFormat="DD/MM/YYYY" type="calendar" [(ngModel)]="purchaseOrder2.NgayKy" placeHolder="DD/MM/YYYY"></owl-date-time>
+          </div>
+          <div class="col-xs-4">
+            <label for="">Ngày Bắt Đầu</label>
+            <br>
+            <owl-date-time dateFormat="DD/MM/YYYY" type="calendar" [(ngModel)]="purchaseOrder2.NgayBatDau" placeHolder="DD/MM/YYYY"></owl-date-time>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4">
+            <label for="">Ngày Kết Thúc</label>
+            <br>
+            <owl-date-time dateFormat="DD/MM/YYYY" type="calendar" [(ngModel)]="purchaseOrder2.NgayKetThuc" placeHolder="DD/MM/YYYY"></owl-date-time>
+          </div>
+          <div class="col-xs-4">
+            <label for="">Giá Trị Hợp Đồng</label>
+            <input class="form-control" id="giatrihopdong2" name="giatrihopdong2" #giatrihopdong2="ngModel" required pattern=".{7,}"
+              [(ngModel)]="purchaseOrder2.GiaTriHopDong" currencyMask [options]="{ prefix:'', suffix: '', thousands: '.', precision : 0}"
+              placeholder="vd : 5.000.000" [(ngModel)]="purchaseOrder2.GiaTriHopDong" min="0">
+            <div [hidden]="giatrihopdong2.valid || giatrihopdong2.untouched">
+              <div style="color: red" *ngIf="giatrihopdong2.errors && giatrihopdong2.errors.pattern">
+                Giá trị hợp đồng phải lớn hơn 1 triệu, vui lòng kiểm tra lại
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <label for="">Kỳ Thanh Toán</label>
+            <div>Xem chi tiết và sửa kỳ thanh toán em đang nghiên cứu</div>
+            <button *ngIf="!purchaseOrder2.KyThanhToan" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal1">
+              <i class="fa fa-plus-square-o" aria-hidden="true"></i> Thêm</button>
+            <button *ngIf="purchaseOrder2.KyThanhToan" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal1">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa</button>
+            <div class="form-control">{{purchaseOrder2.KyThanhToan?.year}} Năm</div>
+            <!-- Modal -->
+            <div id="myModal1" class="modal fade" role="dialog">
+              <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Kỳ Thanh Toán</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <!--
+                        <div class="col-xs-5">
+                        <p-slider [(ngModel)]="purchaseOrder2.KyThanhToan.year" [style]="{'width':'200px'}" [min]="0" [max]="12"></p-slider>
+                        <h3 class="second">{{purchaseOrder2.KyThanhToan.year}} Năm</h3>
+                      </div>
+                      -->
+                      <!-- Value Month
+                        <div class="col-xs-4">
+                          <p-slider [(ngModel)]="valMonth" [style]="{'width':'200px'}" [min]="0" [max]="12"></p-slider>
+                          <h3 class="first">{{valMonth}} Tháng</h3>
+                        </div>
+                        -->
+                    </div>
+                    <button [disabled]="!valYear" class="btn btn-primary" (click)="UpdateThanhToan()">Tạo kỳ thanh toán</button>
+                    <br>
+                    <!--Table Year -->
+                    <legend>Số Năm</legend>
+
+                    <div>
+
+                      <!--Table Month 
+                        <legend *ngIf="valMonth">Số Tháng</legend>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th *ngFor="let month of data; trackBy:$index; let i = index">
+                                T {{i + 1}}
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td *ngFor="let month of data[i]; trackBy: $index; let i = index">
+                                <input type="number" style="text-align: center" class="form-control" placeholder="(edit)" [(ngModel)]="month.value" min="0" max="1000" step="10" />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>-->
+                    </div>
+                    <br>
+                  </div>
+                  <div class="modal-footer">
+                    <button [disabled]="!valYear" type="button" class="btn btn-info pull-left" (click)="SaveKyThanhToan()">
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                    <button type="button" class="btn btn-default pull right" data-dismiss="modal">
+                      <i class="fa fa-times" aria-hidden="true"></i> Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4">
+            <label for="">Khách Hàng</label>
+            <input class="form-control" name="" id="" [(ngModel)]="purchaseOrder2.KhachHang" (click)="openNav()" readonly="true" style="cursor: pointer">
+          </div>
+          <div class="col-xs-4">
+            <label for="">Người Liên Hệ</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.NguoiLienHe" placeholder="Người Liên Hệ">
+          </div>
+          <div class="col-xs-4">
+            <label for="">Địa Chỉ</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.DiaChi">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4">
+            <label for="">AM</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.AM" placeholder="Nhân viên kinh doanh phụ trách hợp đồng">
+          </div>
+          <div class="col-xs-4">
+            <label for="">Nội Dung Hợp Đồng</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.NoiDungHopDong">
+          </div>
+          <div class="col-xs-4">
+            <label for="">Thông Tin Khác</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.ThongTinKhac">
+          </div>
+          <div class="col-xs-4">
+            <label for="">File Hợp Đồng</label>
+            <td>
+              <div *ngIf="purchaseOrder2.FileHopDong == 0">Không có file hợp đồng nào</div>
+              <div *ngFor="let item of purchaseOrder2.FileHopDong">
+                <a href="" (click)='open(item.path)' target="_blank">{{item.originalname}}</a>
+                <a style="cursor: pointer" (click)="deleteFileItem(purchaseOrder2._id, item.filename)" class="pull-right">
+                  <i class="fa fa-trash " aria-hidden="true"></i>
+                </a>
+                <br>
+              </div>
+
+            </td>
+          </div>
+
+        </div>
+        <button [disabled]="disabledBtnUpdate" type="submit" class="btn btn-primary" (click)="updatePurchaseOrder(purchaseOrder2._id)">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+        <i *ngIf="showSpinner" style="margin-top: 5px" class="fa fa-spinner fa-pulse fa-fw" style="cursor: pointer; color:#c34113"
+          aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div style="width:100%; overflow:auto; max-height:300px">
+    <table style="width:100%;" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>STT
+            <br>
+            <span class="label label-info">
+              Tổng: {{purchaseOrders?.length}}</span>
+          </th>
+
+          <th>Số PO</th>
+          <th>Ngày Ký </th>
+          <th>Ngày Bắt Đầu</th>
+          <th>Ngày Kết Thúc</th>
+          <th>Giá Trị Hợp Đồng</th>
+          <th>Kỳ Thanh Toán</th>
+          <th>Khách Hàng</th>
+          <th>Người Liên Hệ</th>
+          <th>Địa Chỉ</th>
+          <th>AM</th>
+          <th>Nội Dung Hợp Đồng</th>
+          <th>Thông Tin Khác</th>
+          <th>File Hợp Đồng</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let po of purchaseOrders; let i = index">
+        <tr>
+          <td>{{i + 1}}</td>
+          <td>{{po.SoHopDong}}</td>
+          <td>{{po.NgayKy | date:'dd/MM/yyyy'}}</td>
+          <td>{{po.NgayBatDau | date:'dd/MM/yyyy' }}</td>
+          <td>{{po.NgayKetThuc | date:'dd/MM/yyyy'}}</td>
+          <td>{{po.GiaTriHopDong | currency: 'VND':symbol-narrow:'3.1'}}</td>
+          <td>{{po.KyThanhToan?.year}} Năm</td>
+          <td>{{po.KhachHang}}</td>
+          <td>{{po.NguoiLienHe}}</td>
+          <td>{{po.DiaChi}}</td>
+          <td>{{po.AM}}</td>
+          <td>{{po.NoiDungHopDong}}</td>
+          <td>{{po.ThongTinKhac}}</td>
+          <td>
+            <a href="" *ngFor="let item of po.FileHopDong" target="_blank" (click)="open(item.path)">{{item.originalname}}</a>
+          </td>
+          <td>
+            <a (click)="setItem(i)" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-primary">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+            </a>
+          </td>
+          <td>
+            <a (click)="deletePurchaseOrders(po._id)" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-danger">
+              <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>

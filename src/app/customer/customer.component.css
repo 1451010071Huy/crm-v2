@@ -1,0 +1,12 @@
+.my-pagination /deep/ .ngx-pagination .current {
+    background: orangered;
+    border-radius: 13px;
+    width: 42px;
+    height: 26px;
+  }
+
+
+.ng-valid[required], ng-valid.required{
+  border-left: 2px solid  #d34615;
+}
+

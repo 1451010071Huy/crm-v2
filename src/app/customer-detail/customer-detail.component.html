@@ -1,0 +1,126 @@
+<div class="container" *ngIf="customer">
+  <div class="row">
+    <div class="col-xs-12 toppad">
+      <div *ngIf="customer" class="panel-body">
+        <div class="row">
+          <div class="col-md-3 col-lg-3 " align="center">
+            <img alt="User Pic" src="https://itviec.com/system/production/employers/logos/642/social_square.jpg?1454112611" class="img-circle img-responsive"> </div>
+          <div class=" col-md-9 col-lg-9 ">
+            <table class="table table-user-information">
+              <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td>
+                    <input class="form-control" disabled="" type="text" id="_id" name="_id" value="{{customer._id}}" [(ngModel)]="customer._id"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Họ và Tên</td>
+                  <td>
+                    <input class="form-control" type="text" id="tendaydu" name="tendaydu" value="{{customer.TenDayDu}}" [(ngModel)]="customer.TenDayDu"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Tên Viết Tắt</td>
+                  <td>
+                    <input class="form-control" type="text" id="tenviettat" name="tenviettat" value="{{customer.TenVietTat}}" [(ngModel)]="customer.TenVietTat"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Người Liên Hệ</td>
+                  <td>
+                    <input class="form-control" type="text" id="tenviettat" name="tenviettat" value="{{customer.NguoiLienHe}}" [(ngModel)]="customer.NguoiLienHe"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Địa Chỉ</td>
+                  <td>
+                    <input class="form-control" type="text" id="tenviettat" name="tenviettat" value="{{customer.DiaChi}}" [(ngModel)]="customer.DiaChi"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Điện Thoại</td>
+                  <td>
+                    <input class="form-control" type="text" id="dienthoai" name="dienthoai" value="{{customer.DienThoai}}" [(ngModel)]="customer.DienThoai"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Fax</td>
+                  <td>
+                    <input class="form-control" type="text" id="dienthoai" name="dienthoai" value="{{customer.SoFax}}" [(ngModel)]="customer.SoFax"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>WebSite</td>
+                  <td>
+                    <input class="form-control" type="text" id="dienthoai" name="dienthoai" value="{{customer.Website}}" [(ngModel)]="customer.Website"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Mô Tả Tóm Tắt</td>
+                  <td>
+                    <textarea class="form-control" value="{{customer.MoTaTomTat}}" [(ngModel)]="customer.MoTaTomTat" name="Text1"></textarea>
+                  </td>
+
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>
+                    <input class="form-control" type="text" id="email" name="email" value="{{customer.Email}}" [(ngModel)]="customer.Email" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>ĐV Kinh Doanh</td>
+                  <td>
+
+                    <select class="form-control" value="{{customer.ThuocDonViKD}}" [(ngModel)]="customer.ThuocDonViKD">
+                      <option *ngFor="let item of donviKD" value="{{item}}">{{item}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Chi Nhánh</td>
+                  <td>
+                    <select class="form-control" value="{{customer.ThuocChiNhanh}}" [(ngModel)]="customer.ThuocChiNhanh">
+                      <option *ngFor="let item of chiNhanh" value="{{item}}">{{item}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>KH Tiềm Năng</td>
+                  <td>
+                    <select class="form-control" type="text" id="lakhtiemnang" name="lakhtiemnang" value="{{customer.LaKHTiemNang}}" [(ngModel)]="customer.LaKHTiemNang">
+                      <option value="true">True</option>
+                      <option value="false">False</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <a href="javascript:history.go(-1)"><i class="fa fa-arrow-left" aria-hidden="true"></i>  Quay lại trang trước</a>
+              <button type="submit" class="btn btn-primary pull-right" (click)="updateCustomer(customer._id)">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--   <div class="panel-footer">
+              <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning">
+          <i class="glyphicon glyphicon-edit"></i>
+      </a>
+        <span class="pull-right">
+        </span>
+      </div>
+      -->
+    </div>
+  </div>
+</div>
+<app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
