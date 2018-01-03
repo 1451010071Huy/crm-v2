@@ -58,7 +58,6 @@ routerPurchaseOrder.delete('/purchase-order/:id', (req, res, next) => {
         }
     }, { new: true })
 })
-
 //update purchase order
 routerPurchaseOrder.put('/purchase-order/:id', (req, res, next) => {
     PurchaseOrder.update({ _id: req.params.id }, req.body, (err, rawData) => {
@@ -72,8 +71,12 @@ routerPurchaseOrder.put('/purchase-order/:id', (req, res, next) => {
 //----------------------------------------
 var storage = multer.diskStorage({ //multers disk storage settings
     destination: function (req, file, cb) {
+        if (!fs.existsSync('uploads')) {//check directory 
+            fs.mkdirSync('uploads');
+        }
         cb(null, './uploads/');
     },
+    //file name 
     filename: function (req, file, cb) {
         var datetimestamp = "";
         var currentTime = new Date();
@@ -94,7 +97,6 @@ var upload = multer({ //multer settings
     storage: storage
 }).any();
 
-
 /** API path that will upload and new purchase order the files */
 routerPurchaseOrder.post('/purchase-order/upload/:id', function (req, res) {
     console.log(req.params.id);
@@ -103,53 +105,47 @@ routerPurchaseOrder.post('/purchase-order/upload/:id', function (req, res) {
             res.json({ error_code: 1, err_desc: err });
             return;
         } else if (doc == null) {
-            res.json({ error_code: 1, err_desc: err });
+            res.json({ error_code: 2, err_desc: err });
             return;
         }
         upload(req, res, function (err) {
             if (err) {
-                res.json({ error_code: 1, err_desc: err });
+                res.json({ error_code: 3, err_desc: err });
                 return;
             }
-            //console.log(req.files); show all files
+            console.log(req.files);
             PurchaseOrder.findByIdAndUpdate(req.params.id, {
                 $pushAll: { FileHopDong: req.files }
-            }, { new: true },
-                function (err, doc) {
-                    if (err) {
-                        res.json({ error_code: 1, err_desc: err });
-                        return;
-                    } else if (doc == null) {
-                        /*delete file */
-                        req.files.forEach(function (file) {
-                            fs.unlink(file.path, function (err) {
-                                if (err) throw err;
-                                console.log('File deleted!');
-                            });
-                        })
-                        res.json({ error_code: 1, err_desc: err });
-                        return;
-                    }
-                    res.json({ error_code: 0, err_desc: null, obj: doc });
-                })
+            }, { new: true }, function (err, doc) {
+                if (err) {
+                    res.json({ error_code: 4, err_desc: err });
+                    return;
+                } else if (doc == null) {
+                    /*delete all files */
+                    req.files.forEach(function (file) {
+                        fs.unlink(file.path, function (err) {
+                            if (err) throw err;
+                            console.log('File deleted!');
+                        });
+                    })
+                    res.json({ error_code: 5, err_desc: err });
+                    return;
+                }
+                res.json({mgs: "add success files",err_desc: null, obj: doc});
+            })
         });
 
     })
 
 });
-/*delete file 
-fs.unlink('./uploads/5112017-134814-Pipe.txt', function (err) {
-    if (err) throw err;
-    console.log('File deleted!');
-  });*/
-/* Delete file item*/
 
+//deleted file item
 routerPurchaseOrder.delete('/purchase-order/:id/:filename', function (req, res) {
     let filename = req.params.filename;
 
     PurchaseOrder.findById(req.params.id, function (err, doc) {
         if (err) {
-            res.json({ error_code: 1, err_desc: err,msg:"id not found" });
+            res.json({ error_code: 1, err_desc: err, msg: "id not found" });
             return;
         } else if (doc == null) {
             res.json({ error_code: 1, err_desc: err });
@@ -159,11 +155,11 @@ routerPurchaseOrder.delete('/purchase-order/:id/:filename', function (req, res) 
             if (err) throw err;
             console.log('File deleted!');
         })
-        doc.FileHopDong.splice(doc.FileHopDong.findIndex(file => file.filename === filename),1)
-        doc.save((err,newDoc) => {
+        doc.FileHopDong.splice(doc.FileHopDong.findIndex(file => file.filename === filename), 1)
+        doc.save((err, newDoc) => {
 
             if (err) throw err;
-            res.json({mgs: "Success"})
+            res.json({ mgs: "Success" })
 
         })
     })

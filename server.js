@@ -43,12 +43,13 @@ app.use(function (req, res, next) {//allow cross origin requests
     next();
 });
 
-// app.get('/', (req, res, next )=> {
-//     consolelog('connected server')
-// })
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
+app.get('/', (req, res, next )=> {
+    consolelog('connected server')
 })
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'dist/index.html'));
+// })
 
 app.listen(port, () => {
     console.log('connect started at port : ' + port);

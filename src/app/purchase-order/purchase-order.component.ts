@@ -1,15 +1,19 @@
 import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
-import { PurchaseOrderServices } from '../services/purchase-order.services';
-import { PurchaseOrder } from "../object/purchase-order";
+
 import { ToastsManager, ToastOptions } from "ng2-toastr/ng2-toastr";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { FormGroup } from '@angular/forms';
 import { DateTimePickerModule } from 'ng-pick-datetime';
 import { FileUploader } from 'ng2-file-upload';
-import { AppSettings } from '../services/url-config'//config url localhost: http://localhost:3000
-import { CustomerService } from "../services/customer.service";
-import { Customer } from '../object/customer';
 import { Input } from '@angular/core/src/metadata/directives';
+
+import { Customer } from '../object/customer';
+import { PurchaseOrder } from "../object/purchase-order";
+
+import { AppSettings } from '../services/url-config'//config url localhost: http://localhost:3000
+import { PurchaseOrderServices } from '../services/purchase-order.services';
+import { EmployeServices } from "../services/employee.services";
+import { CustomerService } from "../services/customer.service";
 
 declare var $: any;//using jquery
 @Component({
@@ -20,6 +24,8 @@ declare var $: any;//using jquery
 })
 
 export class PurchaseOrderComponent implements OnInit {
+  url: any;
+  employees: any;
   valYear: number = 0;
   valMonth: number = 0;
   showSpinner: boolean = false;
@@ -35,13 +41,14 @@ export class PurchaseOrderComponent implements OnInit {
   disabledBtnUpdate: boolean = true;
   showFormAdd: boolean = false;
   showFormEdit: boolean = false;
+  showFileUpload: boolean = true;
   total: number;
 
   hasData = false;
   arr: Array<any>;
   data: Array<any>;
   object: Object;
-  constructor(private customerService: CustomerService, private purchaseOrderServices: PurchaseOrderServices, private toastr: ToastsManager, vcr: ViewContainerRef, private toatOps: ToastOptions) {
+  constructor(private customerService: CustomerService, private purchaseOrderServices: PurchaseOrderServices, private employeesServices: EmployeServices, private toastr: ToastsManager, vcr: ViewContainerRef, private toatOps: ToastOptions) {
     toatOps.positionClass = "toast-top-right";
     toatOps.animate = "flyRight";
     this.toastr.setRootViewContainerRef(vcr);
@@ -65,7 +72,9 @@ export class PurchaseOrderComponent implements OnInit {
     }
     this.getPurchaseOrder();
     this.getCustomers();
+    this.getEmployees()
     this.data = [];
+
   }
   getCustomers() {
     this.customerService.getCustomers()
@@ -73,13 +82,25 @@ export class PurchaseOrderComponent implements OnInit {
         this.customers = customers;
       });
   }
-  getPurchaseOrder() {
+  getPurchaseOrder(id = null) {
     this.purchaseOrderServices.getPurchaseOrder()
       .subscribe(purchaseOrders => {
-        this.purchaseOrders = purchaseOrders
+        this.purchaseOrders = purchaseOrders;
+        if (id == null) return;
+        const file = this.purchaseOrders.find(order => order._id == id).FileHopDong;
+        this.purchaseOrder2.FileHopDong = file;
+      });
+  }
+
+  //Lấy dữ liệu nhân viên
+  getEmployees() {
+    this.employeesServices.getEmployees()
+      .subscribe(employees => {
+        this.employees = employees;
       });
 
-  }
+  };
+
   //mở file hợp đồng
   open(path) {
     window.open(AppSettings.API_ENDPOINT + '/' + path, '_blank').focus();
@@ -93,16 +114,31 @@ export class PurchaseOrderComponent implements OnInit {
       this.purchaseOrderServices.updatePurchaseOrder(_id, this.purchaseOrder2)
         .subscribe(data => {
           this.purchaseOrders[_id] = this.purchaseOrder2[_id];
-          this.getPurchaseOrder();
-          this.toastr.success('Cập nhật hợp đồng ' + this.purchaseOrder2.SoHopDong, 'Thành công');
+          this.uploader.setOptions({
+            url: AppSettings.API_ENDPOINT + '/api/purchase-order/upload/' + this.purchaseOrder2._id
+          });
           this.showSpinner = false;
+          if (this.uploader.queue.length == 0) {
+            this.getPurchaseOrder();
+            this.toastr.success('Hợp đồng ' + this.purchaseOrder2.SoHopDong, 'Cập Nhật Thành công');
+            
+          } else {
+            this.uploader.uploadAll();
+            this.uploader.onCompleteAll = () => {
+              this.toastr.success('Hợp đồng ' + this.purchaseOrder2.SoHopDong, 'Cập Nhật Thành công');
+              this.uploader.clearQueue();
+              this.getPurchaseOrder(_id);
+            }
+          }
         })
     } else {
       alert("Bạn chưa có hợp đồng nào");
     }
 
   }
-
+  test(e) {
+    console.log(e);
+  }
   //add new purchase order
   addPurchaseOrder() {
     this.showSpinner = true;
@@ -175,18 +211,40 @@ export class PurchaseOrderComponent implements OnInit {
   HideFormAdd() {
     this.showFormAdd = false;
   }
-
+  changeShowFileUpload() {
+    this.showFileUpload = !this.showFileUpload;
+  }
   uploadAll() {
     this.uploader.uploadAll();
   }
   openNav() {
     $('#mySidenav').css("width", "250px");
-    $('#main').css("marginRight", "250px");
+    $('#main').css("margin-right", "250px");
+    $('#mySidenav2').css("width", "0");
+    $('#form-purchase-order').css("marginRight", "100px")
+    $('#form-purchase-order2').css("marginRight", "100px")
   }
 
   closeNav() {
     $('#mySidenav').css("width", "0");
     $('#main').css("marginRight", "0");
+    $('#form-purchase-order').css("marginRight", "0")
+    $('#form-purchase-order2').css("marginRight", "0")
+  }
+
+  openNav2() {
+    $('#mySidenav2').css("width", "250px");
+    $('#main').css("marginRight", "250px");
+    $('#mySidenav').css("width", "0");
+    $('#form-purchase-order').css("marginRight", "100px")
+    $('#form-purchase-order2').css("marginRight", "100px")
+  }
+
+  closeNav2() {
+    $('#mySidenav2').css("width", "0");
+    $('#main').css("marginRight", "0");
+    $('#form-purchase-order').css("marginRight", "0")
+    $('#form-purchase-order2').css("marginRight", "0")
   }
 
   GanKhachHang(customer) {
@@ -195,6 +253,14 @@ export class PurchaseOrderComponent implements OnInit {
     else if (this.showFormEdit)
       this.purchaseOrder2.KhachHang = customer;
     this.closeNav();
+  }
+
+  GanNhanVien(employee) {
+    if (this.showFormAdd)
+      this.purchaseOrder.AM = employee;
+    else if (this.showFormEdit)
+      this.purchaseOrder2.AM = employee;
+    this.closeNav2();
   }
 
   SaveKyThanhToan() {
@@ -233,6 +299,7 @@ export class PurchaseOrderComponent implements OnInit {
     if (answer) {
       this.purchaseOrderServices.deleteFilePurchaseOrder(id, fileName).subscribe(data => {
         this.purchaseOrder2.FileHopDong.splice(this.purchaseOrder2.FileHopDong.findIndex(file => file.filename === fileName), 1)
+        this.toastr.success("File " + fileName, "Xóa Thành Công", )
       });
     }
   }

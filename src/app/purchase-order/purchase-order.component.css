@@ -141,3 +141,13 @@ input[readonly] {
   background-color: white !important;
   cursor: text !important;
  }
+
+.mt {
+    margin-top: 15px;
+}
+.ml{
+    margin-left: 15px;
+}
+.mr{
+    margin-right: 15px;
+}

@@ -11,7 +11,7 @@ routeCustosmer.get('/customers', (req, res, next) => {
 //get customer
 routeCustosmer.get('/customer/detail/:id', (req, res, next)=>{
     Customer.findById(req.params.id, (err, customer)=>{
-        console.log(customer)
+        //console.log(customer)
         res.json(customer);
     })
 })
