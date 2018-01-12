@@ -2,11 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const bodyParser = require('body-parser')
-const app = express();
-const routeCustosmer = require('./routes/customer.route')
-const routerPurchaseOrder = require('./routes/purchase-order.router')
+const routeCustosmer = require('../routes/customer.route')
+const routerPurchaseOrder = require('../routes/purchase-order.router')
 const cors = require('cors');
-var multer = require('multer');
+
+const app = express();
 const port = process.env.PORT || 3000;
 
 mongoose.Promise = global.Promise;
@@ -16,12 +16,13 @@ plug in your own promise library instead: http://mongoosejs.com/docs/promises.ht
 mongoose.connect('mongodb://crmfpt:crmfpt@ds125994.mlab.com:25994/crm', { useMongoClient: true });
 mongoose.connection.on("connected", () => {
     console.log("connected to database crm mlab");
-})
+});
+
 mongoose.connection.on("error", (err) => {
     if (err) {
         console.log("Error in database connection" + err);
     }
-})
+});
 
 app.use(cors());
 app.use(bodyParser.json());

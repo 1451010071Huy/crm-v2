@@ -10,22 +10,22 @@
 
 <body id="main">
   <!-- nav customer -->
-  <div id="mySidenav" class="sidenav">
+  <div id="mySidenav" class="sidenav mt-5">
     <div class="panel panel-default">
       <div class="panel-heading c-list">
         <div class="title">
           <div class="row">
-            <div class="col-xs-2 pull-left">
-              <a>
+            <div class="col">
+              <a href="">
                 <span href="javascript:void(0)" class="fa fa-times" (click)="closeNav()" style="text-align: left"></span>
               </a>
             </div>
-            <div class="col-xs-8 pull-center">
-              <span>Khách Hàng</span>
+            <div class="col">
+              KháchHàng
             </div>
-            <div class="col-xs-2 pull-right">
-              <a routerLink="/customers">
-                <i class="glyphicon glyphicon-plus"></i>
+            <div class="col text-right">
+              <a href="">
+                <i routerLink="/customers" class="fa fa-plus" aria-hidden="true"></i>
               </a>
             </div>
           </div>
@@ -35,49 +35,52 @@
           </div>
         </div>
       </div>
-      <ul class="list-group" id="contact-list" *ngFor="let customer of customers | filter: searchText" (click)="GanKhachHang(customer.TenDayDu)">
-        <li class="list-group-item" id="" class="cursor:pointer">
-          <div class="col-xs-12">
-            <span class="name">{{customer.TenDayDu}}</span>
-            <br/>
-            <span class="glyphicon glyphicon-map-marker text-muted c-info" data-toggle="tooltip" title="{{customer.DiaChi}}"></span>
-            <span class="visible-xs">
-              <span class="text-muted">{{customer.DiaChi}}</span>
-              <br/>
-            </span>
-            <span class="glyphicon glyphicon-earphone text-muted c-info" data-toggle="tooltip" title="{{customer.DienThoai}}"></span>
-            <span class="visible-xs">
-              <span class="text-muted">{{customer.DienThoai}}</span>
-              <br/>
-            </span>
-            <span class="fa fa-comments text-muted c-info" data-toggle="tooltip" title="{{customer.Email}}"></span>
-            <span class="visible-xs">
-              <span class="text-muted">{{customer.Email}}</span>
-              <br/>
-            </span>
+      <ul class="list-group" id="contact-list" *ngFor="let customer of customers | filter: searchText" (click)="SetCustomer(customer.TenDayDu)">
+        <div class="card border-success mt-2" id="contact-title">
+          <h5 class="card-header text-success">{{customer.TenDayDu}}</h5>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-2">
+                <i class="fa fa-location-arrow" aria-hidden="true"></i>
+              </div>
+              <div class="col-10">
+                <p class="card-text">{{customer.DiaChi}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+              </div>
+              <div class="col-10">
+                <p class="card-text">{{customer.DienThoai}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2">
+                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+              </div>
+              <div class="col-10">
+                <p class="card-text">{{customer.Email}}</p>
+              </div>
+            </div>
           </div>
-          <div class="clearfix"></div>
+        </div>
       </ul>
     </div>
   </div>
   <!-- nav employees -->
-  <div id="mySidenav2" class="sidenav">
+  <div id="mySidenav2" class="sidenav mt-5">
     <div class="panel panel-default">
       <div class="panel-heading c-list">
         <div class="title">
           <div class="row">
-            <div class="col-xs-2 pull-left">
-              <a>
-                <span href="javascript:void(0)" class="fa fa-times" (click)="closeNav2()" style="text-align: left"></span>
+            <div class="col">
+              <a href="javascript:void(0)">
+                <span class="fa fa-times" (click)="closeNav2()" style="text-align: left"></span>
               </a>
             </div>
-            <div class="col-xs-8 pull-center">
+            <div class="col-8">
               <span>Nhân Viên</span>
-            </div>
-            <div class="col-xs-2 pull-right">
-              <a routerLink="/customers">
-                <i class="glyphicon glyphicon-plus"></i>
-              </a>
             </div>
           </div>
           <div class="row" style="margin-left: auto">
@@ -86,50 +89,57 @@
           </div>
         </div>
       </div>
-      <ul class="list-group" id="contact-list" *ngFor="let employee of employees | filter: searchText" (click)="GanNhanVien(employee.fullName)">
-        <li class="list-group-item" id="" class="cursor:pointer">
-          <div class="col-xs-12">
-            <span class="name">{{employee.fullName}}</span>
-            <br/>
-            <span class="glyphicon glyphicon-map-marker text-muted c-info" data-toggle="tooltip" title="{{employee.address}}"></span>
-            <span class="visible-xs">
-              <span class="text-muted">{{employee.address}}</span>
-              <br/>
-            </span>
-            <span class="glyphicon glyphicon-earphone text-muted c-info" data-toggle="tooltip" title="{{employee.phoneNumber}}"></span>
-            <span class="visible-xs">
-              <span class="text-muted">{{employee.phoneNumber}}</span>
-              <br/>
-            </span>
-            <span class="fa fa-comments text-muted c-info" data-toggle="tooltip" title="{{employee.email}}"></span>
-            <span class="visible-xs">
-              <span class="text-muted">{{employee.email}}</span>
-              <br/>
-            </span>
+      <ul class="list-group" id="employee-list" *ngFor="let employee of employees | filter: searchText" (click)="SetEmployee(employee.fullName)">
+        <div class="card border-success mt-2">
+          <h5 class="card-header text-success">{{employee.fullName}}</h5>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-2">
+                <i class="fa fa-location-arrow" aria-hidden="true"></i>
+              </div>
+              <div class="col-10">
+                <p class="card-text">{{employee.address}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+              </div>
+              <div class="col-10">
+                <p class="card-text">{{employee.phoneNumber}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2">
+                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+              </div>
+              <div class="col-10">
+                <p class="card-text">{{employee.email}}</p>
+              </div>
+            </div>
           </div>
-          <div class="clearfix"></div>
+        </div>
       </ul>
     </div>
   </div>
   <!-- Add purchase-order-->
   <div class="container">
-
     <div *ngIf="purchaseOrder" class="container">
       <div [hidden]="showFormAdd">
         <button type="button" class="btn btn-primary" (click)="ShowFormAdd()">
           <i class="fa fa-plus" aria-hidden="true"></i> Add Purchase Order</button>
       </div>
       <button *ngIf="showFormAdd" type="button" class="btn btn-default" (click)="HideFormAdd()">
-        <i class="fa fa-minus" aria-hidden="true"></i> Ẩn Form </button>
-      <div id="form-purchase-order" class="form-horizontal well mt" *ngIf="showFormAdd">
-        <div>
+        <i class="fa fa-minus" aria-hidden="true"></i> Thu Gọn</button>
+      <div id="form-purchase-order" class="row mt-3" *ngIf="showFormAdd">
+        <div class="container-fluid">
           <legend>Add purchaseOrder</legend>
           <div class="row">
-            <div class="col-xs-4">
+            <div class="col">
               <label for="">Số PO</label>
               <input type="text" class="form-control" [(ngModel)]="purchaseOrder.SoHopDong" placeholder="Số hợp đồng">
             </div>
-            <div class="col-xs-4">
+            <div class="col">
               <label for="">Giá Trị Hợp Đồng</label>
               <input class="form-control" id="giatrihopdong" name="giatrihopdong" #giatrihopdong="ngModel" required pattern=".{7,}" [(ngModel)]="purchaseOrder.GiaTriHopDong"
                 currencyMask [options]="{ prefix:'', suffix: '', thousands: '.', precision : 0}" placeholder="vd : 5.000.000">
@@ -139,12 +149,18 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-4">
-              <label for="">Kỳ Thanh Toán</label>
-              <button *ngIf="!purchaseOrder.KyThanhToan" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">
-                <i class="fa fa-plus" aria-hidden="true"></i> Thêm</button>
-              <button *ngIf="purchaseOrder.KyThanhToan" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa</button>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <label for="">Kỳ Thanh Toán</label>
+                </div>
+                <div class="col text-right">
+                  <a href="" *ngIf="!purchaseOrder.KyThanhToan" data-toggle="modal" data-target="#myModal">
+                    <i class="fa fa-plus" aria-hidden="true"></i>Thêm</a>
+                  <a href="" *ngIf="purchaseOrder.KyThanhToan" data-toggle="modal" data-target="#myModal">
+                    <i class="fa fa-plus" aria-hidden="true"></i>Sửa</a>
+                </div>
+              </div>
               <div class="form-control">{{valYear}} Năm</div>
               <!-- Modal -->
               <div id="myModal" class="modal fade" role="dialog">
@@ -152,17 +168,21 @@
                   <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
+                      <h4 class="">Kỳ Thanh Toán</h4>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Kỳ Thanh Toán</h4>
                     </div>
                     <div class="modal-body">
                       <div class="row">
-                        <div class="col-xs-5">
+                        <div class="col-3">
                           <p-slider [(ngModel)]="valYear" [style]="{'width':'200px'}" [min]="0" [max]="12"></p-slider>
-                          <h3 class="second">{{valYear}} Năm</h3>
+                        </div>
+                        <div class="col">
+                          <h3>
+                            <i class="fa fa-calendar" aria-hidden="true"></i> ({{valYear}} Năm)
+                          </h3>
                         </div>
                         <!-- Value Month
-                        <div class="col-xs-4">
+                        <div class="col">
                           <p-slider [(ngModel)]="valMonth" [style]="{'width':'200px'}" [min]="0" [max]="12"></p-slider>
                           <h3 class="first">{{valMonth}} Tháng</h3>
                         </div>
@@ -173,19 +193,22 @@
                       <!--Table Year -->
                       <legend>Số Năm</legend>
                       <div *ngIf="valYear">
-                        <div *ngFor="let year of data; trackBy: $index; let y = index">
-                          <label>Năm thứ {{y + 1}}-------------------------------</label>
+                        <div *ngFor="let year of dataAdd; trackBy: $index; let y = index">
+                          <p class="text-info">
+                            <strong>
+                              <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> Năm thứ {{y + 1}} (Đv: Triệu Đồng)</strong>
+                          </p>
                           <table class="table table-bordered">
                             <thead>
                               <tr>
                                 <th *ngFor="let month of getArrayOf(12); trackBy: $index; let i = index">
-                                  T {{i + 1}}
+                                  <i class="fa fa-calendar-o" aria-hidden="true"></i> Th. {{i + 1}}
                                 </th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
-                                <td *ngFor="let month of data[y]; trackBy: $index; let i = index">
+                                <td *ngFor="let month of dataAdd[y]; trackBy: $index; let i = index">
                                   <input type="number" class="form-control" style="text-align: center" [(ngModel)]="month.value" min="0" max="1000" step="10"
                                   />
                                 </td>
@@ -193,8 +216,11 @@
                             </tbody>
 
                           </table>
-                          <label id="">Total : {{ calculate(data[y]) | currency:'VND':symbol-narrow:'0.0' }}</label>
-                          <br>
+                          <label class="text-primary">
+                            <i class="fa fa-money" aria-hidden="true"></i> Tổng tiền: {{calculateDataAdd(dataAdd[y]) | number : '1.0'}}
+                            <strong> (Triệu)</strong>
+                          </label>
+                          <hr>
                         </div>
                       </div>
                       <div>
@@ -205,7 +231,7 @@
                           <thead>
                             <tr>
                               <th *ngFor="let month of data; trackBy:$index; let i = index">
-                                T {{i + 1}}
+                                Th. {{i + 1}}
                               </th>
                             </tr>
                           </thead>
@@ -230,79 +256,75 @@
                 </div>
               </div>
             </div>
-
-          </div>
-          <div class="row">
-            <div class="col-xs-4">
+            <div class="w-100"></div>
+            <div class="col">
               <label for="">Ngày Ký</label>
               <br>
               <p-calendar yearRange="2017:2050" yearNavigator="true" placeholder="Ngày/Tháng/Năm" dateFormat="dd/mm/yy" [monthNavigator]="true"
                 [(ngModel)]="purchaseOrder.NgayKy" [showIcon]="true" showButtonBar="true"></p-calendar>
             </div>
-            <div class="col-xs-4">
+            <div class="col">
               <label for="">Ngày Bắt Đầu</label>
               <br>
               <p-calendar yearRange="2017:2050" yearNavigator="true" placeholder="Ngày/Tháng/Năm" dateFormat="dd/mm/yy" [monthNavigator]="true"
                 [(ngModel)]="purchaseOrder.NgayBatDau" [showIcon]="true" showButtonBar="true"></p-calendar>
             </div>
-            <div class="col-xs-4">
+            <div class="col">
               <label for="">Ngày Kết Thúc</label>
               <br>
               <p-calendar yearRange="2017:2050" yearNavigator="true" placeholder="Ngày/Tháng/Năm" dateFormat="dd/mm/yy" [monthNavigator]="true"
                 [(ngModel)]="purchaseOrder.NgayKetThuc" [showIcon]="true" showButtonBar="true"></p-calendar>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-4">
+            <div class="w-100"></div>
+            <div class="col">
               <label for="">Khách Hàng</label>
-              <input class="form-control" name="" id="" [(ngModel)]="purchaseOrder.KhachHang" (click)="openNav()" readonly="true" placeholder="Chọn khách hàng">
+              <input class="form-control" name="" id="add-customer" [(ngModel)]="purchaseOrder.KhachHang" (click)="openNav()" readonly="true" placeholder="Chọn khách hàng">
             </div>
-            <div class="col-xs-4">
+            <div class="col">
               <label for="">Người Liên Hệ</label>
               <input type="text" class="form-control" [(ngModel)]="purchaseOrder.NguoiLienHe" placeholder="Người liên hệ">
             </div>
-            <div class="col-xs-4">
+            <div class="col">
               <label for="">Địa Chỉ</label>
               <input type="text" class="form-control" [(ngModel)]="purchaseOrder.DiaChi" placeholder="261 – 263 Phan Xích Long, P.2, Q.Phú Nhuận">
             </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-4">
+            <div class="w-100"></div>
+            <div class="col">
               <label for="">AM</label>
               <i>(Nhân viên kinh doanh phụ trách hợp đồng)</i>
-              <input type="text" class="form-control" [(ngModel)]="purchaseOrder.AM" (click)="openNav2()" readonly="true" placeholder="Chọn nhân viên">
+              <input type="text" id="add-employee" class="form-control" [(ngModel)]="purchaseOrder.AM" (click)="openNav2()" readonly="true" placeholder="Chọn nhân viên">
             </div>
-            <div class="col-xs-4">
+            <div class="col">
               <label for="">Nội Dung Hợp Đồng</label>
               <input type="text" class="form-control" [(ngModel)]="purchaseOrder.NoiDungHopDong" placeholder="Nội dung hợp đồng">
             </div>
-            <div class="col-xs-4">
+            <div class="col">
               <label for="">Thông Tin Khác</label>
               <input type="text" class="form-control" [(ngModel)]="purchaseOrder.ThongTinKhac" placeholder="Thông tin khác">
             </div>
           </div>
           <div class="row">
-            <div class="col-xs-11">
+            <div class="col">
               <label for="multiple">File Hợp Đồng</label>
               <div class="row">
-                <div class="col-xs-2 col-sm-2">
+                <div class="col-2">
                   <div class="input-group">
                     <span class="input-group-btn">
-                      <span class="btn btn-primary btn-file">
+                      <span class="btn btn-outline-primary btn-file float-right">
                         <i class="fa fa-folder-open-o" aria-hidden="true"></i> Choose File...
-                        <input type="file" class="form-control" name="multiple" ng2FileSelect [uploader]="uploader" multiple accept=".csv, .doc, .docx, .djvu, .odp, .ods,
+                        <input type="file" name="multiple" ng2FileSelect [uploader]="uploader" multiple accept=".csv, .doc, .docx, .djvu, .odp, .ods,
                                 .odt, .pps, .ppsx, .ppt, .pptx, .pdf, .ps, .eps, .rtf, .wks, .wps, .xls, .xlsx, .xps">
                       </span>
                     </span>
                   </div>
                   <br>
                 </div>
-                <div class="col-xs-10 col-sm-10">
+                <div class="col-10">
                   <table class="table">
                     <thead>
                       <tr>
                         <th width="40%">Name
-                          <span class="label label-primary">Tổng {{ uploader?.queue?.length }}</span>
+                          <span class="badge badge-primary">Tổng {{ uploader?.queue?.length }}</span>
                         </th>
                         <th>Size</th>
                         <th>Progress</th>
@@ -346,10 +368,10 @@
                   </table>
                   <div style="text-align: center">
                     <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-                      <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                      <i class="fa fa-ban" aria-hidden="true"></i> Cancel all
                     </button>
                     <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-                      <span class="glyphicon glyphicon-trash"></span> Remove all
+                      <i class="fa fa-trash-o" aria-hidden="true"></i> Remove all
                     </button>
                   </div>
                   <div>
@@ -357,7 +379,7 @@
                       Queue progress:
                       <div class="progress text-primary">
                         <div class="progress-bar progress-bar-info" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%'}"></div>
-                        <div>{{uploader.progress + '%'}}</div>
+                        <div *ngIf="uploader?.queue?.length != 0">{{uploader.progress + '%'}}</div>
                       </div>
                     </div>
                     <div>
@@ -368,82 +390,108 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-xs-4">
+            <div class="col">
               <button type="submit" class="btn btn-primary" (click)="addPurchaseOrder()">
                 <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit</button>
               <i *ngIf="showSpinner" style="margin-top: 5px" class="fa fa-spinner fa-pulse fa-fw" style="cursor: pointer; color:#c34113"></i>
             </div>
+
           </div>
+
         </div>
       </div>
     </div>
     <div *ngIf="purchaseOrder" class="container">
-      <div *ngIf="showFormEdit" class="form-horizontal well mt" id="form-purchase-order2">
+      <div *ngIf="showFormEdit" class="form-horizontal mt-3" id="form-purchase-order2">
         <legend>Edit Purchase Order</legend>
-        <div>
-          <div class="row">
-            <div class="col-xs-10">
-            </div>
-            <div class="col-xs-4">
-              <label for="">Số PO</label>
-              <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.SoHopDong" placeholder="vd: HD0123">
-            </div>
-            <div class="col-xs-4">
-              <label for="">Giá Trị Hợp Đồng</label>
-              <input class="form-control" id="giatrihopdong2" name="giatrihopdong2" #giatrihopdong2="ngModel" required pattern=".{7,}"
-                [(ngModel)]="purchaseOrder2.GiaTriHopDong" currencyMask [options]="{ prefix:'', suffix: '', thousands: '.', precision : 0}"
-                placeholder="vd : 5.000.000" [(ngModel)]="purchaseOrder2.GiaTriHopDong" min="0">
-              <div [hidden]="giatrihopdong2.valid || giatrihopdong2.untouched">
-                <div style="color: red" *ngIf="giatrihopdong2.errors && giatrihopdong2.errors.pattern">
-                  Giá trị hợp đồng phải lớn hơn 1 triệu, vui lòng kiểm tra lại
-                </div>
+        <div class="row">
+          <div class="col">
+            <label for="">Số PO</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.SoHopDong" placeholder="vd: HD0123">
+          </div>
+          <div class="col">
+            <label for="">Giá Trị Hợp Đồng</label>
+            <input class="form-control" id="giatrihopdong2" name="giatrihopdong2" #giatrihopdong2="ngModel" required pattern=".{7,}"
+              [(ngModel)]="purchaseOrder2.GiaTriHopDong" currencyMask [options]="{ prefix:'', suffix: '', thousands: '.', precision : 0}"
+              placeholder="vd : 5.000.000" [(ngModel)]="purchaseOrder2.GiaTriHopDong" min="0">
+            <div [hidden]="giatrihopdong2.valid || giatrihopdong2.untouched">
+              <div style="color: red" *ngIf="giatrihopdong2.errors && giatrihopdong2.errors.pattern">
+                Giá trị hợp đồng phải lớn hơn 1 triệu, vui lòng kiểm tra lại
               </div>
             </div>
-            <div class="col-xs-4">
-              <label for="">Kỳ Thanh Toán</label>
-              <button *ngIf="!purchaseOrder2.KyThanhToan" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal1">
-                <i class="fa fa-plus" aria-hidden="true"></i> Thêm</button>
-              <button *ngIf="purchaseOrder2.KyThanhToan" type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal1">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa</button>
-              <div class="form-control">{{purchaseOrder2.KyThanhToan?.year}} Năm</div>
-              <!-- Modal -->
-              <div id="myModal1" class="modal fade" role="dialog">
-                <div class="modal-dialog modal-lg">
-                  <!-- Modal content-->
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Kỳ Thanh Toán</h4>
+          </div>
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <label for="">Kỳ Thanh Toán</label>
+              </div>
+              <div class="col text-right">
+                <a href="" *ngIf="!purchaseOrder2.KyThanhToan?.year" data-toggle="modal" data-target="#myModal1">
+                  <i class="fa fa-plus" aria-hidden="true"></i>Thêm</a>
+                <a href="" *ngIf="purchaseOrder2.KyThanhToan?.year" data-toggle="modal" data-target="#myModal1">
+                  <i class="fa fa-plus" aria-hidden="true"></i>Sửa</a>
+              </div>
+            </div>
+            <div class="form-control">{{purchaseOrder2.KyThanhToan?.year}} Năm</div>
+            <!-- Modal -->
+            <div id="myModal1" class="modal fade" role="dialog">
+              <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="">Kỳ Thanh Toán</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="ml-3">
+                      <h3 class="second">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> ({{valYear}} Năm)</h3>
                     </div>
-                    <div class="modal-body">
-                      <div class="row">
-                        <!--
-                                <div class="col-xs-5">
-                                <p-slider [(ngModel)]="purchaseOrder2.KyThanhToan.year" [style]="{'width':'200px'}" [min]="0" [max]="12"></p-slider>
-                                <h3 class="second">{{purchaseOrder2.KyThanhToan.year}} Năm</h3>
-                              </div>
-                              -->
-                        <!-- Value Month
-                                <div class="col-xs-4">
-                                  <p-slider [(ngModel)]="valMonth" [style]="{'width':'200px'}" [min]="0" [max]="12"></p-slider>
-                                  <h3 class="first">{{valMonth}} Tháng</h3>
-                                </div>
-                                -->
+                    <br>
+                    <!--Table Year -->
+
+                    <legend>Số Năm</legend>
+                    <div *ngIf="valYear">
+                      <div *ngFor="let year of dataUpdate; trackBy: $index; let y = index">
+                        <p class="text-info">
+                          <strong>
+                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            Năm thứ {{y + 1}}</strong>
+                        </p>
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th *ngFor="let month of getArrayOf(12); trackBy: $index; let i = index">
+                                <i class="fa fa-calendar-o" aria-hidden="true"></i> Th. {{i + 1}}
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td *ngFor="let month of dataUpdate[y]; trackBy: $index; let i = index">
+                                <input type="number" class="form-control" style="text-align: center" [(ngModel)]="month.value" min="0" max="1000" step="10"
+                                />
+                              </td>
+                            </tr>
+                          </tbody>
+
+                        </table>
+                        <label class="text-primary">
+                          <i class="fa fa-money" aria-hidden="true"></i> Tổng tiền: {{calculateDataUpdate(dataUpdate[y])}}
+                          <strong> (Triệu)</strong>
+                        </label>
+                        <hr>
                       </div>
-                      <button [disabled]="!valYear" class="btn btn-primary" (click)="UpdateThanhToan()">Tạo kỳ thanh toán</button>
-                      <br>
-                      <!--Table Year -->
-                      <legend>Số Năm</legend>
+                    </div>
+                    <div>
 
-                      <div>
-
-                        <!--Table Month 
+                      <!--Table Month 
                                 <legend *ngIf="valMonth">Số Tháng</legend>
                                 <table class="table table-bordered">
                                   <thead>
                                     <tr>
                                       <th *ngFor="let month of data; trackBy:$index; let i = index">
-                                        T {{i + 1}}
+                                        Th. {{i + 1}}
                                       </th>
                                     </tr>
                                   </thead>
@@ -455,186 +503,172 @@
                                     </tr>
                                   </tbody>
                                 </table>-->
-                      </div>
-                      <br>
                     </div>
-                    <div class="modal-footer">
-                      <button [disabled]="!valYear" type="button" class="btn btn-info pull-left" (click)="SaveKyThanhToan()">
-                        <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
-                      <button type="button" class="btn btn-default pull right" data-dismiss="modal">
-                        <i class="fa fa-times" aria-hidden="true"></i> Close</button>
-                    </div>
+                    <br>
+                  </div>
+                  <div class="modal-footer">
+                    <button [disabled]="!valYear" type="button" class="btn btn-info pull-left" (click)="SaveKyThanhToan()">
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                    <button type="button" class="btn btn-default pull right" data-dismiss="modal">
+                      <i class="fa fa-times" aria-hidden="true"></i> Close</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-xs-4">
-              <label for="">Ngày Kết Thúc</label>
-              <br>
-              <owl-date-time dateFormat="DD/MM/YYYY" type="calendar" [(ngModel)]="purchaseOrder2.NgayKetThuc" placeHolder="DD/MM/YYYY"></owl-date-time>
-            </div>
-            <div class="col-xs-4">
-              <label for="">Ngày Ký</label>
-              <br>
-              <owl-date-time dateFormat="DD/MM/YYYY" type="calendar" [(ngModel)]="purchaseOrder2.NgayKy" placeHolder="DD/MM/YYYY"></owl-date-time>
-            </div>
-            <div class="col-xs-4">
-              <label for="">Ngày Bắt Đầu</label>
-              <br>
-              <owl-date-time dateFormat="DD/MM/YYYY" type="calendar" [(ngModel)]="purchaseOrder2.NgayBatDau" placeHolder="DD/MM/YYYY"></owl-date-time>
-            </div>
 
+          <div class="w-100"></div>
+          <div class="col">
+            <label for="">Ngày Kết Thúc</label>
+            <br>
+            <owl-date-time dateFormat="DD/MM/YYYY" type="calendar" [(ngModel)]="purchaseOrder2.NgayKetThuc" placeHolder="DD/MM/YYYY"></owl-date-time>
           </div>
-          <div class="row">
-            <div class="col-xs-4">
-              <label for="">Khách Hàng</label>
-              <input class="form-control" [(ngModel)]="purchaseOrder2.KhachHang" (click)="openNav()" readonly="true" placeholder="Chọn khách hàng">
-            </div>
-            <div class="col-xs-4">
-              <label for="">Người Liên Hệ</label>
-              <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.NguoiLienHe" placeholder="Người liên hệ">
-            </div>
-            <div class="col-xs-4">
-              <label for="">Địa Chỉ</label>
-              <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.DiaChi" placeholder="Địa chỉ">
-            </div>
+          <div class="col">
+            <label for="">Ngày Ký</label>
+            <br>
+            <owl-date-time dateFormat="DD/MM/YYYY" type="calendar" [(ngModel)]="purchaseOrder2.NgayKy" placeHolder="DD/MM/YYYY"></owl-date-time>
           </div>
-          <div class="row">
-            <div class="col-xs-4">
-              <label for="">AM</label>
-              <i>(Nhân viên kinh doanh phụ trách hợp đồng)</i>
-              <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.AM" (click)="openNav2()" readonly="true" placeholder="Chọn nhân viên">
-            </div>
-            <div class="col-xs-4">
-              <label for="">Nội Dung Hợp Đồng</label>
-              <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.NoiDungHopDong" placeholder="Nội dung hợp đồng">
-            </div>
-            <div class="col-xs-4">
-              <label for="">Thông Tin Khác</label>
-              <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.ThongTinKhac" placeholder="Thông tin khác">
-            </div>
-            <legend (click)="changeShowFileUpload()">
-              <div style="cursor: pointer" class="ml">
-                <i class="fa fa-minus" aria-hidden="true" *ngIf="showFileUpload"></i>
-                <i class="fa fa-bars" aria-hidden="true" *ngIf="!showFileUpload"></i>
+          <div class="col">
+            <label for="">Ngày Bắt Đầu</label>
+            <br>
+            <owl-date-time dateFormat="DD/MM/YYYY" type="calendar" [(ngModel)]="purchaseOrder2.NgayBatDau" placeHolder="DD/MM/YYYY"></owl-date-time>
+          </div>
+
+
+          <div class="w-100"></div>
+          <div class="col">
+            <label for="">Khách Hàng</label>
+            <input class="form-control" id="edit-customer" [(ngModel)]="purchaseOrder2.KhachHang" (click)="openNav()" readonly="true" placeholder="Chọn khách hàng">
+          </div>
+          <div class="col">
+            <label for="">Người Liên Hệ</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.NguoiLienHe" placeholder="Người liên hệ">
+          </div>
+          <div class="col">
+            <label for="">Địa Chỉ</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.DiaChi" placeholder="Địa chỉ">
+          </div>
+          <div class="w-100"></div>
+          <div class="col">
+            <label for="">AM</label>
+            <i>(Nhân viên kinh doanh phụ trách hợp đồng)</i>
+            <input type="text" class="form-control" id="edit-employee" [(ngModel)]="purchaseOrder2.AM" (click)="openNav2()" readonly="true" placeholder="Chọn nhân viên">
+          </div>
+          <div class="col">
+            <label for="">Nội Dung Hợp Đồng</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.NoiDungHopDong" placeholder="Nội dung hợp đồng">
+          </div>
+          <div class="col">
+            <label for="">Thông Tin Khác</label>
+            <input type="text" class="form-control" [(ngModel)]="purchaseOrder2.ThongTinKhac" placeholder="Thông tin khác">
+          </div>
+        </div>
+        <legend (click)="changeShowFileUpload()">
+          <div style="cursor: pointer" class="ml">
+            <i class="fa fa-minus" aria-hidden="true" *ngIf="showFileUpload"></i>
+            <i class="fa fa-bars" aria-hidden="true" *ngIf="!showFileUpload"></i>
+          </div>
+
+        </legend>
+        <div class="row" *ngIf="showFileUpload">
+          <div class="col">
+            <div class="card border-info">
+              <div class="card-header">File Hợp Đồng
+                <span *ngIf="purchaseOrder2.FileHopDong?.length > 0" class="badge badge-primary">Tổng {{purchaseOrder2.FileHopDong?.length}}</span>
+                <span class="btn btn-outline-info btn-file btn-sm float-right">
+                  <i class="fa fa-folder-open-o" aria-hidden="true"></i> Choose File...
+                  <input type="file" name="multiple" ng2FileSelect [uploader]="uploader" multiple accept=".csv, .doc, .docx, .djvu, .odp, .ods,
+                                                                        .odt, .pps, .ppsx, .ppt, .pptx, .pdf, .ps, .eps, .rtf, .wks, .wps, .xls, .xlsx, .xps">
+                </span>
               </div>
-            </legend>
-            <div class="col">
-              <div *ngIf="purchaseOrder2.FileHopDong && showFileUpload">
-                <div class="col-xs-4">
-                  <div class="panel panel-info">
-                    <div class="panel-heading">
-                      <div class="row">
-                        <div class="col-sm-7">
-                          <strong>File Hợp Đồng
-                            <span *ngIf="purchaseOrder2.FileHopDong?.length > 0" class="badge">Tổng {{purchaseOrder2.FileHopDong?.length}}</span>
-                          </strong>
-                        </div>
-                        <div class="col-sm-4 pull-right">
-                          <span class="btn btn-primary btn-file btn-xs pull-right">
-                            <i class="fa fa-folder-open-o" aria-hidden="true"></i> Choose File...
-                            <input type="file" name="multiple" ng2FileSelect [uploader]="uploader" multiple accept=".csv, .doc, .docx, .djvu, .odp, .ods,
-                                                        .odt, .pps, .ppsx, .ppt, .pptx, .pdf, .ps, .eps, .rtf, .wks, .wps, .xls, .xlsx, .xps">
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="panel-body">
-                      <div *ngIf="purchaseOrder2.FileHopDong == 0">Không có file hợp đồng nào</div>
-                      <div *ngFor="let item of purchaseOrder2.FileHopDong">
-                        <div class="list-group">
-                          <div class="list-group-item">
-                            <a href="" style="max-width: 100px" (click)='open(item.path)' target="_blank">{{item.originalname}}</a>
-                            <a style="cursor: pointer" (click)="deleteFileItem(purchaseOrder2._id, item.filename)" class="text-danger pull-right">
-                              <i class="fa fa-trash " aria-hidden="true"></i>
-                            </a>
-                          </div>
+              <div class="text-center text-warning" *ngIf="purchaseOrder2.FileHopDong == 0">Không có file hợp đồng nào</div>
+              <div class="card-body" *ngFor="let item of purchaseOrder2.FileHopDong">
+                <p class="card-text text-success" style="cursor: pointer">
+                  <a (click)='open(item.path)' target="_blank">{{item.originalname}}</a>
+                  <a style="cursor: pointer" (click)="deleteFileItem(purchaseOrder2._id, item.filename)" class="text-danger pull-right">
+                    <i class="fa fa-trash " aria-hidden="true"></i>
+                  </a>
 
-                        </div>
-                      </div>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-8">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="40%">Name
+                    <span class="badge badge-primary">Tổng {{ uploader?.queue?.length }}</span>
+                  </th>
+                  <th>Size</th>
+                  <th>Progress</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of uploader.queue">
+                  <td>
+                    <strong>{{ item.file.name }}</strong>
+                  </td>
+                  <td nowrap>{{ item.file.size/1024/1024 | number:'.2' }} MB</td>
+                  <td>
+                    <div class="progress progress-striped active" style="margin-bottom: 0;">
+                      <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                      <div>{{item.progress + '%'}}</div>
                     </div>
-                  </div>
+                  </td>
+                  <td class="text-center">
+                    <span *ngIf="item.isSuccess">
+                      <i class="glyphicon glyphicon-ok"></i>
+                    </span>
+                    <span *ngIf="item.isCancel">
+                      <i class="glyphicon glyphicon-ban-circle"></i>
+                    </span>
+                    <span *ngIf="item.isError">
+                      <i class="glyphicon glyphicon-remove"></i>
+                    </span>
+                  </td>
+                  <td nowrap>
+                    <button type="button" class="btn btn-warning btn-xs" (click)="item.cancel()" [disabled]="!item.isUploading">
+                      <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger btn-xs" (click)="item.remove()">
+                      <span class="glyphicon glyphicon-trash"></span> Remove
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="text-align: center">
+              <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                <i class="fa fa-ban" aria-hidden="true"></i> Cancel all
+              </button>
+              <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                <span class="glyphicon glyphicon-trash"></span>
+                <i class="fa fa-trash-o" aria-hidden="true"></i> Remove all
+              </button>
+            </div>
+            <div>
+              <div class="text-info">
+                Queue progress:
+                <div class="progress text-primary">
+                  <div class="progress-bar progress-bar-info" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%'}"></div>
+                  <div *ngIf="uploader?.queue.length != 0">{{uploader.progress + '%'}}</div>
                 </div>
-                <div class="col-xs-8">
-                  <div>
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th width="40%">Name
-                            <span class="label label-primary">Tổng {{ uploader?.queue?.length }}</span>
-                          </th>
-                          <th>Size</th>
-                          <th>Progress</th>
-                          <th>Status</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let item of uploader.queue">
-                          <td>
-                            <strong>{{ item.file.name }}</strong>
-                          </td>
-                          <td nowrap>{{ item.file.size/1024/1024 | number:'.2' }} MB</td>
-                          <td>
-                            <div class="progress progress-striped active" style="margin-bottom: 0;">
-                              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                              <div>{{item.progress + '%'}}</div>
-                            </div>
-                          </td>
-                          <td class="text-center">
-                            <span *ngIf="item.isSuccess">
-                              <i class="glyphicon glyphicon-ok"></i>
-                            </span>
-                            <span *ngIf="item.isCancel">
-                              <i class="glyphicon glyphicon-ban-circle"></i>
-                            </span>
-                            <span *ngIf="item.isError">
-                              <i class="glyphicon glyphicon-remove"></i>
-                            </span>
-                          </td>
-                          <td nowrap>
-                            <button type="button" class="btn btn-warning btn-xs" (click)="item.cancel()" [disabled]="!item.isUploading">
-                              <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                            </button>
-                            <button type="button" class="btn btn-danger btn-xs" (click)="item.remove()">
-                              <span class="glyphicon glyphicon-trash"></span> Remove
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div style="text-align: center">
-                      <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-                      </button>
-                      <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-                        <span class="glyphicon glyphicon-trash"></span> Remove all
-                      </button>
-                    </div>
-                    <div>
-                      <div class="text-info">
-                        Queue progress:
-                        <div class="progress text-primary">
-                          <div class="progress-bar progress-bar-info" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%'}"></div>
-                          <div>{{uploader.progress + '%'}}</div>
-                        </div>
-                      </div>
-                      <div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              </div>
+              <div>
               </div>
             </div>
 
           </div>
         </div>
-        <button [disabled]="disabledBtnUpdate" type="submit" class="btn btn-primary" (click)="updatePurchaseOrder(purchaseOrder2._id)">
-          <i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
-        <i *ngIf="showSpinner" style="margin-top: 5px" class="fa fa-spinner fa-pulse fa-fw" style="cursor: pointer; color:#c34113"
-          aria-hidden="true"></i>
+        <div class="form-group mt-3">
+          <button [disabled]="disabledBtnUpdate" type="submit" class="btn btn-primary" (click)="updatePurchaseOrder(purchaseOrder2._id)">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Update</button>
+          <i *ngIf="showSpinner" style="margin-top: 5px" class="fa fa-spinner fa-pulse fa-fw" style="cursor: pointer; color:#c34113"
+            aria-hidden="true"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -646,7 +680,7 @@
         <tr>
           <th>STT
             <br>
-            <span class="label label-info">
+            <span class="badge badge-primary">
               Tổng: {{purchaseOrders?.length}}</span>
           </th>
 
@@ -684,15 +718,18 @@
           <td>{{po.ThongTinKhac}}</td>
           <td>
             <a href="" *ngFor="let item of po.FileHopDong" target="_blank" data-toggle="tooltip" title="{{item.originalname}}" data-placement="bottom"
-              (click)="open(item.path)">{{item.originalname}}</a>
+              (click)="open(item.path)">{{item.originalname}}
+              <br>
+            </a>
           </td>
           <td>
-            <a (click)="setItem(i)" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-primary">
+            <a style="cursor: pointer" (click)="setItem(i)" data-original-title="Remove this user" data-toggle="tooltip" class="text-primary">
               <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
             </a>
           </td>
           <td>
-            <a (click)="deletePurchaseOrders(po._id)" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-danger">
+            <a style="cursor: pointer" (click)="deletePurchaseOrders(po._id)" data-original-title="Remove this user" data-toggle="tooltip"
+              class="text-danger">
               <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
             </a>
           </td>
@@ -700,9 +737,6 @@
       </tbody>
     </table>
   </div>
-  <button type="button" class="btn btn-outline-secondary" placement="top" ngbTooltip="Tooltip on top">
-      Tooltip on top
-    </button>
 </body>
 
 </html>

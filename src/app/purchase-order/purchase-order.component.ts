@@ -46,7 +46,8 @@ export class PurchaseOrderComponent implements OnInit {
 
   hasData = false;
   arr: Array<any>;
-  data: Array<any>;
+  dataAdd: Array<any>;
+  dataUpdate: Array<any>;
   object: Object;
   constructor(private customerService: CustomerService, private purchaseOrderServices: PurchaseOrderServices, private employeesServices: EmployeServices, private toastr: ToastsManager, vcr: ViewContainerRef, private toatOps: ToastOptions) {
     toatOps.positionClass = "toast-top-right";
@@ -73,7 +74,8 @@ export class PurchaseOrderComponent implements OnInit {
     this.getPurchaseOrder();
     this.getCustomers();
     this.getEmployees()
-    this.data = [];
+    this.dataAdd = [];
+    this.dataUpdate = [];
 
   }
   getCustomers() {
@@ -121,11 +123,10 @@ export class PurchaseOrderComponent implements OnInit {
           if (this.uploader.queue.length == 0) {
             this.getPurchaseOrder();
             this.toastr.success('Hợp đồng ' + this.purchaseOrder2.SoHopDong, 'Cập Nhật Thành công');
-            
           } else {
             this.uploader.uploadAll();
             this.uploader.onCompleteAll = () => {
-              this.toastr.success('Hợp đồng ' + this.purchaseOrder2.SoHopDong, 'Cập Nhật Thành công');
+              this.toastr.success('Thêm file hợp đồng', 'Thành công');
               this.uploader.clearQueue();
               this.getPurchaseOrder(_id);
             }
@@ -136,9 +137,7 @@ export class PurchaseOrderComponent implements OnInit {
     }
 
   }
-  test(e) {
-    console.log(e);
-  }
+
   //add new purchase order
   addPurchaseOrder() {
     this.showSpinner = true;
@@ -154,12 +153,12 @@ export class PurchaseOrderComponent implements OnInit {
         });
         //console.log(this.uploader.options.url.toString());
         this.uploader.uploadAll();
-        this.uploader.onCompleteAll = () => {
+        this.uploader.onSuccessItem = () => {
           this.toastr.success('Tạo hợp đồng ' + purchaseOrder.SoHopDong, 'Thành công!');
           this.uploader.clearQueue();
           this.getPurchaseOrder();
+          console.log(this.uploader.progress);
         };
-
         this.showSpinner = false;
         this.purchaseOrder = new PurchaseOrder;
       });
@@ -191,8 +190,23 @@ export class PurchaseOrderComponent implements OnInit {
     this.purchaseOrder2.NgayBatDau = this.purchaseOrders[id].NgayBatDau;
     this.purchaseOrder2.NgayKetThuc = this.purchaseOrders[id].NgayKetThuc;
     this.purchaseOrder2.GiaTriHopDong = this.purchaseOrders[id].GiaTriHopDong;
+
     this.purchaseOrder2.KyThanhToan = this.purchaseOrders[id].KyThanhToan;
 
+    this.dataUpdate = new Array(this.valYear);
+
+    if (this.purchaseOrder2.KyThanhToan) {
+
+      this.valYear = this.purchaseOrder2.KyThanhToan.year;
+      console.log(this.purchaseOrder2.KyThanhToan.values);
+      this.dataUpdate = this.purchaseOrder2.KyThanhToan.values.slice()
+      console.log(this.dataUpdate);
+    } else {
+      this.valYear = 0;
+    }
+
+
+    // this.purchaseOrder2.KyThanhToan.year = this.valYear;
     this.purchaseOrder2.KhachHang = this.purchaseOrders[id].KhachHang;
     this.purchaseOrder2.NguoiLienHe = this.purchaseOrders[id].NguoiLienHe;
     this.purchaseOrder2.DiaChi = this.purchaseOrders[id].DiaChi;
@@ -221,33 +235,30 @@ export class PurchaseOrderComponent implements OnInit {
     $('#mySidenav').css("width", "250px");
     $('#main').css("margin-right", "250px");
     $('#mySidenav2').css("width", "0");
-    $('#form-purchase-order').css("marginRight", "100px")
-    $('#form-purchase-order2').css("marginRight", "100px")
   }
 
   closeNav() {
     $('#mySidenav').css("width", "0");
     $('#main').css("marginRight", "0");
-    $('#form-purchase-order').css("marginRight", "0")
-    $('#form-purchase-order2').css("marginRight", "0")
   }
 
   openNav2() {
     $('#mySidenav2').css("width", "250px");
     $('#main').css("marginRight", "250px");
     $('#mySidenav').css("width", "0");
-    $('#form-purchase-order').css("marginRight", "100px")
-    $('#form-purchase-order2').css("marginRight", "100px")
   }
 
   closeNav2() {
     $('#mySidenav2').css("width", "0");
     $('#main').css("marginRight", "0");
-    $('#form-purchase-order').css("marginRight", "0")
-    $('#form-purchase-order2').css("marginRight", "0")
   }
 
-  GanKhachHang(customer) {
+  SetCustomer(customer) {
+
+    $("#add-customer, #edit-customer").css({ "color": "#93C54B", "font-weight": "bold" });
+    setTimeout(() => {
+      $("#add-customer, #edit-customer").css({ "color": "#495057", "font-weight": "normal" });
+    }, 1000);
     if (this.showFormAdd)
       this.purchaseOrder.KhachHang = customer;
     else if (this.showFormEdit)
@@ -255,7 +266,11 @@ export class PurchaseOrderComponent implements OnInit {
     this.closeNav();
   }
 
-  GanNhanVien(employee) {
+  SetEmployee(employee) {
+    $("#add-employee, #edit-employee").css({ "color": "#93C54B", "font-weight": "bold" });
+    setTimeout(() => {
+      $("#add-employee, #edit-employee").css({ "color": "#495057", "font-weight": "normal" });
+    }, 1000);
     if (this.showFormAdd)
       this.purchaseOrder.AM = employee;
     else if (this.showFormEdit)
@@ -264,8 +279,9 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   SaveKyThanhToan() {
-    this.purchaseOrder.KyThanhToan = { year: this.valYear, values: this.data };
-    this.toastr.info("Lưu thành công");
+    this.purchaseOrder.KyThanhToan = { year: this.valYear, values: this.dataAdd };
+    this.purchaseOrder2.KyThanhToan = { year: this.valYear, values: this.dataUpdate };
+    this.toastr.success("Lưu kỳ thanh toán", "Thành Công")
   }
   getArrayOf(year) {
     this.arr = new Array(year);
@@ -279,18 +295,21 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   TaoKyThanhToan() {
-    this.data = new Array(this.valYear)
+    this.dataAdd = new Array(this.valYear)
     for (var i = 0; i < this.valYear; i++) {
 
-      this.data[i] = [{ value: 0 }, { value: 0 }, { value: 0 }, { value: 0 },
+      this.dataAdd[i] = [{ value: 0 }, { value: 0 }, { value: 0 }, { value: 0 },
       { value: 0 }, { value: 0 }, { value: 0 }, { value: 0 }, { value: 0 },
       { value: 0 }, { value: 0 }, { value: 0 },]
     }
   }
 
   //Tính tổng tiền từng tháng của kỳ thanh toán
-  calculate(data) {
-    return data.reduce((total, item) => total + item.value, 0)
+  calculateDataAdd(dataAdd) {
+    return dataAdd.reduce((total, item) => total + item.value, 0)
+  }
+  calculateDataUpdate(dataUpdate) {
+    return dataUpdate.reduce((total, item) => total + item.value, 0)
   }
 
   //Xóa từng file hợp đồng
@@ -303,4 +322,5 @@ export class PurchaseOrderComponent implements OnInit {
       });
     }
   }
+
 } 
