@@ -27,7 +27,7 @@ mongoose.connection.on("error", (err) => {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 
 app.get('/uploads/:filename', (req, res, err) => {
@@ -44,13 +44,13 @@ app.use(function (req, res, next) {//allow cross origin requests
     next();
 });
 
-//app.get('/', (req, res, next )=> {
+//app.get('/', (req, res, next) => {
  //   console.log('connected server')
   //  res.send("connected server")
 //})
 
 app.get('*', (req, res) => {
-     res.sendFile(path.join(__dirname, '../dist/index.html'));
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
 })
 
 app.listen(port, () => {
