@@ -173,7 +173,7 @@
           <a routerLink="/customers/detail/{{customer._id}}" data-original-title="Edit this user" data-toggle="tooltip" class="text-primary">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
           </a>
-          <a href="" (click)="deleteCustomer(customer._id)" data-original-title="Remove this user" data-toggle="tooltip" class="text-danger">
+          <a style="cursor: pointer" (click)="deleteCustomer(customer._id)" data-original-title="Remove this user" data-toggle="tooltip" class="text-danger">
             <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
           </a>
         </td>

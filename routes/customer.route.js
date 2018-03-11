@@ -35,6 +35,7 @@ routeCustosmer.post('/customer', (req, res, next) => {
     newCustomer.save((err, customer) => {
         if (err) {
             res.json({ msg: 'failed to add customer' });    
+            res.json({ msg: err });  
         } else {
             res.json({ msg: 'customer added successfully' });
         }
