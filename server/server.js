@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 
 app.get('/uploads/:filename', (req, res, err) => {
-    res.sendFile(path.join(__dirname, './uploads', req.params.filename));
+    res.sendFile(path.join(__dirname, '../uploads', req.params.filename));
 });
 
 app.use('/api', routeCustosmer)
@@ -45,7 +45,8 @@ app.use(function (req, res, next) {//allow cross origin requests
 });
 
 app.get('/', (req, res, next )=> {
-    consolelog('connected server')
+    console.log('connected server')
+    res.send("connected server")
 })
 
 // app.get('*', (req, res) => {
