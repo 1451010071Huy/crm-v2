@@ -50,7 +50,7 @@ app.use(function (req, res, next) {//allow cross origin requests
 //})
 
 app.get('*', (req, res) => {
-     res.sendFile(path.join(__dirname, 'dist/index.html'));
+     res.sendFile(path.join(__dirname, '../dist/index.html'));
 })
 
 app.listen(port, () => {
