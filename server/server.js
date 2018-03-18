@@ -29,13 +29,14 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, '../dist')));
 
-
-app.get('/uploads/:filename', (req, res, err) => {
-    res.sendFile(path.join(__dirname, '../uploads', req.params.filename));
-});
-
 app.use('/api', routeCustosmer)
 app.use('/api', routerPurchaseOrder)
+
+//open file (__dirname : duong dan thu muc local)
+app.get('/server/uploads/:filename', (req, res, err) => {
+    res.sendFile(path.join(__dirname, './uploads', req.params.filename));
+});
+
 app.use(function (req, res, next) {//allow cross origin requests
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
     res.header("Access-Control-Allow-Origin", "*");

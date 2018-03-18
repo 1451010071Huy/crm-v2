@@ -106,6 +106,7 @@ export class PurchaseOrderComponent implements OnInit {
   //mở file hợp đồng
   open(path) {
     window.open(AppSettings.API_ENDPOINT + '/' + path, '_blank').focus();
+    console.log(path);
   }
 
   //update Purchase Order

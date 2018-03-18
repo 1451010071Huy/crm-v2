@@ -71,10 +71,10 @@ routerPurchaseOrder.put('/purchase-order/:id', (req, res, next) => {
 //----------------------------------------
 var storage = multer.diskStorage({ //multers disk storage settings
     destination: function (req, file, cb) {
-        if (!fs.existsSync('uploads')) {//check directory 
-            fs.mkdirSync('uploads');
+        if (!fs.existsSync('./server/uploads/')) {//check directory 
+            fs.mkdirSync('./server/uploads/');
         }
-        cb(null, './uploads/');
+        cb(null, './server/uploads/');
     },
     //file name 
     filename: function (req, file, cb) {
@@ -137,7 +137,9 @@ routerPurchaseOrder.post('/purchase-order/upload/:id', function (req, res) {
 
     })
 
+
 });
+
 
 //deleted file item
 routerPurchaseOrder.delete('/purchase-order/:id/:filename', function (req, res) {
